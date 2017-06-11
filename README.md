@@ -13,5 +13,11 @@ For the log table, the file path is assumed to contain the article slug, by pars
 
 datetime in imported to assist in working with timestamp fields
 
+## Output
+Three queries are executed with results printed to the console:
+* Popular articles - the three most popular articles, by page views via the log, are returned
+* Popular authors - all authors are returned sorted by total views
+* Error frequency - days are returned in which the percent of errors logged was greater than 1%
+
 ## Running
 `python logs_analysis_project.py`
