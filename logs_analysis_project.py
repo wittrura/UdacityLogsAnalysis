@@ -12,7 +12,8 @@ def get_popular_articles():
     c = db.cursor()
     c.execute("""SELECT articles.title, count(log.time) as timestamps
                  FROM log
-                 JOIN articles ON log.path = concat('/article/', articles.slug)
+                 JOIN articles
+                    ON log.path = concat('/article/', articles.slug)
                  GROUP BY articles.title
                  ORDER BY timestamps desc
                  LIMIT 3
@@ -20,7 +21,8 @@ def get_popular_articles():
     logs = c.fetchall()
     print 'Most popular articles:'
     for log in logs:
-        # log[0] = article title, log[1] = count of timestamps per article aka views
+        # log[0] = article title
+        # log[1] = count of timestamps per article aka views
         print log[0] + ' - ' + str(log[1]) + ' views'
 
     db.close()
@@ -36,7 +38,6 @@ def get_logs_with_author():
                  JOIN authors ON articles.author = authors.id
                  GROUP BY authors.name
                  ORDER BY timestamps desc
-                 LIMIT 20
                  """)
     logs = c.fetchall()
 
