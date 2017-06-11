@@ -58,15 +58,15 @@ def get_high_error_days():
               SELECT ok.date, ok.count, error.count,
                 ((error.count::float / (ok.count + error.count)) * 100.0) as percent
               FROM
-                (SELECT date(time) as date, status, count(time) as count
+                (SELECT date(time) as date, count(time) as count
                  FROM log
                  WHERE status = '200 OK'
-                 GROUP BY date(time), status) ok
+                 GROUP BY date(time)) ok
               JOIN
-                (SELECT date(time) as date, status, count(time) as count
+                (SELECT date(time) as date, count(time) as count
                  FROM log
                  WHERE status = '404 NOT FOUND'
-                 GROUP BY date(time), status) error
+                 GROUP BY date(time)) error
               ON ok.date = error.date
               WHERE ((error.count::float / (ok.count + error.count)) * 100.0) > 1.0
               """)
