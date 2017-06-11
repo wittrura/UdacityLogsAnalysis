@@ -29,7 +29,8 @@ def get_popular_articles():
 
 
 def get_logs_with_author():
-    """Return all authors with view counts descending, based on parsing log paths"""
+    """Return all authors with view counts descending,
+    based on parsing log paths"""
     db = psycopg2.connect(database=DBNAME)
     c = db.cursor()
     c.execute("""SELECT authors.name, count(log.time) as timestamps
@@ -43,7 +44,8 @@ def get_logs_with_author():
 
     print 'Most popular authors:'
     for log in logs:
-        # log[0] = authors name, log[1] = count of timestamps per article aka views
+        # log[0] = authors name
+        # log[1] = count of timestamps per article aka views
         print log[0] + ' - ' + str(log[1]) + ' views'
 
     db.close()
@@ -68,13 +70,15 @@ def get_high_error_days():
                  WHERE status = '404 NOT FOUND'
                  GROUP BY date(time)) error
               ON ok.date = error.date
-              WHERE ((error.count::float / (ok.count + error.count)) * 100.0) > 1.0
+              WHERE
+                ((error.count::float / (ok.count + error.count)) * 100.0) > 1.0
               """)
     logs = c.fetchall()
 
     print 'Days with error rate greater than 1%:'
     for log in logs:
-        # log[0] = date, log[3] = percentage of errors
+        # log[0] = date
+        # log[3] = percentage of errors
         print log[0].strftime('%B %d, %Y') + ' - ' + str(round(log[3], 2)) + '%'
 
     db.close
